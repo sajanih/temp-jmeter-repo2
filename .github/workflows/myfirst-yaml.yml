@@ -52,10 +52,9 @@ jobs:
           ~/jmeter/bin/jmeter -n -t test-plans/test-plan-jmeter-browse-website.jmx -l test-results/results.jtl -j logs/jmeter.log
 
       # Step 4: Save results as artifacts
-      - name: Upload results folders as artifacts
+      - name: Upload logs folder as artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Upload jmeter-logs-and-test-results
+          name: Upload jmeter-logs
           path: |
             jmeter-logs/
-            test-results/
