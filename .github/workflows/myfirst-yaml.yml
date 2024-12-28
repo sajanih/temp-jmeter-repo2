@@ -34,12 +34,28 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          
-      # Step 2: Install JMeter
-      - name: Install JMeter
+
+      # Step 2: Install JMeter and Rename JMeter folder
+      - name: Install JMeter and Rename JMeter folder
         run: |
           sudo apt-get update
           sudo apt-get install -y default-jdk wget
           wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
           tar -xvzf apache-jmeter-5.6.3.tgz
-          mv apache-jmeter-5.6.3 ~/jmeter      
+          mv apache-jmeter-5.6.3 ~/jmeter    
+          
+      # Step 3: Run a JMeter test Plan
+      - name: Run JMeter test plan 
+        run: |
+          mkdir -p test-results
+          mkdir -p jmeter-logs
+          ~/jmeter/bin/jmeter -n -t test-plans/test-plan-jmeter-browse-website.jmx -l test-results/results.jtl -j logs/jmeter.log
+
+      # Step 4: Save results as artifacts
+      - name: Upload results folders as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Upload jmeter-logs-and-test-results
+          path: |
+            jmeter-logs/
+            test-results/
